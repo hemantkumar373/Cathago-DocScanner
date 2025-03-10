@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="title">Credit-Based Document Scanning System</div>
+
+      <div class="main-content">
+        <div class="login-container">
+          <div class="login-form">
+            <h1 class="welcome-text">Welcome Back!</h1>
+            <div class="subtitle">Please login to your account</div>
+
+            <form id="loginForm">
+              <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="email" required/>
+                <label for="email">User Email:</label>
+                <span class="error-message" id="emailError"></span>
+              </div>
+
+              <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="password" required/>
+                <label for="password">Password:</label>
+                <span class="error-message" id="passwordError"></span>
+              </div>
+
+              <button type="submit" class="login-button">Login</button>
+
+              <div class="login-link">
+                <p>
+                  Don't have an account?
+                  <a href="register.html">Register here</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

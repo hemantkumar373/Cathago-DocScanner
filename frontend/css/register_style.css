@@ -1,0 +1,201 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+/* Container */
+.container {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main Register Container */
+.register-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.register-card {
+    background-color: white;
+    width: 100%;
+    max-width: 28rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-form-container {
+    padding: 1.5rem;
+}
+
+.register-title {
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+.form-input {
+    background-color: #f3f4f6;
+    border: 1px solid #f3f4f6;
+    color: #111827;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 0.625rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #000;
+    background-color: #fff;
+}
+
+/* Role Selection */
+.role-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.role-option {
+    flex: 1;
+    position: relative;
+}
+
+.role-radio {
+    display: none;
+}
+
+.role-label {
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-label:hover {
+    background-color: #f8f9fa;
+}
+
+.role-radio:checked+.role-label {
+    border-color: #000;
+    background-color: #f8f9fa;
+}
+
+/* Register Button */
+.register-button {
+    width: 100%;
+    background-color: #4263eb;
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #1a1a1a;
+}
+
+/* Login Link */
+.login-link {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+}
+
+.login-link a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 0.25rem;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+.error-message {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #dc2626;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Responsive Styles */
+@media (min-width: 640px) {
+    .register-form-container {
+        padding: 2rem;
+    }
+
+    .register-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .register-title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .register-container {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .register-card {
+        max-width: 32rem;
+    }
+}

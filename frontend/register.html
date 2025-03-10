@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="css/register_style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="register-container">
+        <div class="register-card">
+          <div class="register-form-container">
+            <h1 class="register-title">Register Now!</h1>
+
+            <div
+              class="error-message"
+              id="errorMessage"
+              style="display: none"
+            ></div>
+
+            <form id="registerForm">
+              <div class="form-group">
+                <label class="form-label" for="username">Username:</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  class="form-input"
+                  placeholder="username"
+                />
+                <span class="error-text" id="usernameError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="useremail">Email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="useremail"
+                  class="form-input"
+                  placeholder="email"
+                />
+                <span class="error-text" id="emailError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="password">Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-input"
+                  placeholder="password"
+                />
+                <span class="error-text" id="passwordError"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Select Role</label>
+                <div class="role-container">
+                  <div class="role-option">
+                    <input
+                      type="radio"
+                      id="user"
+                      name="role"
+                      value="user"
+                      class="role-radio"
+                      checked
+                    />
+                    <label for="user" class="role-label">User</label>
+                  </div>
+
+                  <div class="role-option">
+                    <input
+                      type="radio"
+                      id="admin"
+                      name="role"
+                      value="admin"
+                      class="role-radio"
+                    />
+                    <label for="admin" class="role-label">Admin</label>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="register-button">
+                Create an account
+              </button>
+
+              <div class="login-link">
+                Already have an account?
+                <a href="login.html">Login here</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/register.js"></script>
+  </body>
+</html>

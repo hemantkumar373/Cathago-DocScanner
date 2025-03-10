@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cathago DocScanner</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #4263eb;
+    --primary-dark: #5471e7;
+    --primary-light: #edf2ff;
+    --primary-hover: #5c7cfa;
+    --danger-color: #fa5252;
+    --danger-hover: #e03131;
+    --success-color: #40c057;
+    --success-hover: #37b24d;
+    --text-color: #343a40;
+    --text-light: #868e96;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --sidebar-width: 250px;
+    --sidebar-bg: #4263eb;
+    --sidebar-hover: #2b3f6b;
+    --sidebar-active: #3b5bdb;
+    --sidebar-text: #f8f9fc;
+    --header-height: 70px;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-logo {
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    padding: 2px 0;
+}
+
+.sidebar {
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.main-content {
+    margin-left: 250px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 1001;
+}
+
+.nav-item {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    margin: 4px 0;
+}
+
+.nav-item:hover {
+    background-color: var(--sidebar-hover);
+    color: white;
+    border-left: 3px solid var(--primary-hover);
+}
+
+.nav-item.active {
+    background-color: var(--sidebar-active);
+    color: white;
+    border-left: 3px solid #ffffff;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.nav-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-section-title {
+    padding: 0 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.header {
+    height: var(--header-height);
+    background: var(--card-bg);
+    padding: 0 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 3px 6px rgba(66, 99, 235, 0.2);
+}
+
+.role-badge {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.6rem;
+    letter-spacing: 0.4px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.user-email {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.logout-btn {
+    font-size: 14px;
+    color: #fff;
+    background-color: var(--danger-color);
+    padding: 10px 24px;
+    display: inline-block;
+    border-radius: 25px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    transition: all .3s;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 3px 8px rgba(250, 82, 82, 0.2);
+}
+
+.logout-btn:hover {
+    background: var(--danger-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(250, 82, 82, 0.3);
+}
+
+/* Dashboard Content */
+.dashboard-container {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: var(--text-color);
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.page-title:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    margin-bottom: 16px;
+    color: var(--text-color);
+    font-size: 1.4rem;
+}
+
+/* Credits Section */
+.credits-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.credits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credits-amount {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.credits-info {
+    background: var(--primary-light);
+    border: 1px solid #d0dbff;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: var(--primary-dark);
+    line-height: 1.5;
+}
+
+.request-credits-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(66, 99, 235, 0.25);
+}
+
+.request-credits-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(66, 99, 235, 0.3);
+}
+
+/* Credit Requests Table */
+.credits-requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.credits-requests-table th {
+    text-align: left;
+    padding: 15px;
+    background-color: #f1f3f9;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.credits-requests-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.credits-requests-table tr:last-child td {
+    border-bottom: none;
+}
+
+.credits-requests-table tr:hover {
+    background-color: #f9fafd;
+}
+
+.request-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: #fff4de;
+    color: #b86e00;
+}
+
+.status-approved {
+    background: #e7f9ed;
+    color: var(--success-color);
+}
+
+.status-rejected {
+    background: #ffe8e8;
+    color: var(--danger-color);
+}
+
+/* Upload Section */
+.upload-section {
+    margin-top: 20px;
+}
+
+.upload-area {
+    border: 2px dashed #d1d8f0;
+    border-radius: 16px;
+    padding: 50px 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    background-color: #f8faff;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background-color: #f0f4ff;
+    transform: translateY(-5px);
+}
+
+.upload-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.upload-area p {
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* History Section */
+.scan-history {
+    margin-top: 25px;
+}
+
+.history-list {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.history-item:hover {
+    background-color: #f5f7ff;
+    transform: translateX(5px);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.doc-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-color);
+}
+
+.scan-date {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.match-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.match-count {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.view-doc-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(66, 99, 235, 0.2);
+}
+
+.view-doc-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 99, 235, 0.3);
+}
+
+/* Match Results */
+.match-result {
+    background: var(--primary-light);
+    border: 1px solid #d0dbff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 25px;
+}
+
+.match-result h3 {
+    color: var(--primary-dark);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+.match-result[style*="display: block"] {
+    animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.match-item {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.match-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.match-details {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.similarity-bar {
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #4263eb, #5c7cfa);
+    transition: width 0.4s ease-out;
+    border-radius: 10px;
+}
+
+.percentage {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Document Viewer */
+.document-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.document-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 35px;
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.document-content h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaedf3;
+}
+
+.document-matches {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color);
+}
+
+.close-btn {
+    background: var(--danger-color);
+    color: black;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 3px 8px rgba(250, 82, 82, 0.2);
+}
+
+.close-btn:hover {
+    background: var(--danger-hover);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(250, 82, 82, 0.3);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 35px;
+    width: 90%;
+    max-width: 520px;
+    margin: 80px auto;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    margin-bottom: 30px;
+}
+
+.modal-header h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.modal-header h2:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #e4e9f2;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.15);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.modal-btn {
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.cancel-btn {
+    background: #f1f3f9;
+    border: 1px solid #e4e9f2;
+    color: var(--text-color);
+}
+
+.cancel-btn:hover {
+    background: #e4e9f2;
+    transform: translateY(-2px);
+}
+
+.submit-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    box-shadow: 0 3px 8px rgba(66, 99, 235, 0.2);
+}
+
+.submit-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(66, 99, 235, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+        overflow: visible;
+    }
+
+    .app-logo {
+        display: none;
+    }
+
+    .nav-label {
+        display: none;
+    }
+
+    .nav-item i {
+        margin-right: 0;
+        font-size: 1.4rem;
+    }
+
+    .nav-section-title {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0 25px;
+    }
+
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .user-email {
+        display: none;
+    }
+
+    .upload-area {
+        padding: 30px 15px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 40px auto;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 250px;
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .nav-label {
+        display: contents;
+    }
+    
+    .header {
+        padding-left: 50px; /* Make room for the menu toggle */
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* Optional: add overlay when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 999;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* Page visibility */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Tab container in credit requests page */
+.tab-container {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
+}
+
+.tab {
+    padding: 14px 25px;
+    cursor: pointer;
+    font-weight: 500;
+    position: relative;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+.tab:hover {
+    color: var(--primary-hover);
+}
+
+.tab.active {
+    color: var(--primary-color);
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px 3px 0 0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.rejection-text {
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-light);
+}
+
+.empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    color: var(--primary-color);
+}
+
+/* Credit Request Items */
+.credit-request-item {
+    background: var(--card-bg);
+    border: 1px solid #e4e9f2;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.credit-request-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border-color: #d0dbff;
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaedf3;
+}
+
+.request-date {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.request-date i {
+    margin-right: 6px;
+    color: var(--primary-color);
+}
+
+.request-details h4 {
+    margin-bottom: 12px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.request-reason {
+     color: #4b5563;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    background: #f8faff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.approved-amount {
+    color: var(--success-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+}
+
+.approved-amount i {
+    color: var(--success-color);
+}
+
+.rejection-text {
+    color: var(--danger-color);
+    font-weight: 500;
+    background: #fff1f1;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--danger-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding: 16px;
+    background-color: #f8faff;
+    border-radius: 12px;
+    border: 1px solid #e4e9f2;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #d0dbff;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.filter-select:hover {
+    border-color: var(--primary-color);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.15);
+}
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        </head>
+        <div class="app-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="app-logo">Cathago</div>
+                </div>
+                <div class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="upload">
+                        <i class="fas fa-upload"></i>
+                        <span class="nav-label">Upload Document</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="history">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-label">History</span>
+                    </a>
+    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Credits</div>
+                        <a href="#" class="nav-item" data-page="credits">
+                            <i class="fas fa-coins"></i>
+                            <span class="nav-label">Credit Request</span>
+                        </a>
+                        <a href="#" class="nav-item" data-page="credit-requests">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span class="nav-label">Credit Requests History</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Header -->
+                <header class="header">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="user-info">
+                        <div class="avatar" id="userAvatar">U</div>
+                        <div class="user-details">
+                            <div class="username">
+                                <span id="username">Loading...</span>
+                                <span class="role-badge">User</span>
+                            </div>
+                            <span class="user-email" id="userEmail">loading@email.com</span>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </header>
+    
+                <!-- Dashboard Container -->
+                <div class="dashboard-container">
+                    <!-- Home Page -->
+                    <div class="page active" id="home-page">
+                        <h1 class="page-title">Dashboard</h1>
+                        <div class="dashboard-grid">
+                            <!-- Quick Stats -->
+                            <div class="card">
+                                <h2>Available Credits</h2>
+                                <div class="credits-amount" id="userCredits">0</div>
+                                <div class="credits-info" style="margin-top: 15px;">
+                                    You will receive 20 free credits daily at midnight
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Upload Page -->
+                    <div class="page" id="upload-page">
+                        <h1 class="page-title">Upload Document</h1>
+                        <div class="card">
+                            <h2>Scan Documents Here</h2>
+                            <p style="margin-bottom: 20px;">Upload a document to compare it against our database and identify similarities.
+                            </p>
+                            <p><strong>Check History for results.<strong></p>
+    
+                            <div class="upload-area" onclick="triggerFileUpload()">
+                                <div class="upload-icon"><i class="fas fa-file-upload"></i></div>
+                                <p>Click or drag & drop to upload a document</p>
+                                <p style="color: #6b7280; font-size: 0.9rem; margin-top: 8px;">(1 credit per scan)</p>
+                                <input type="file" id="fileInput" hidden accept=".txt">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- History Page -->
+                    <div class="page" id="history-page">
+                        <h1 class="page-title">Document History</h1>
+                        <div class="card">
+                            <h2>Scan History</h2>
+                            <p style="margin-bottom: 20px;">View all your previously scanned documents and their match
+                                results.</p>
+    
+                            <div class="scan-history">
+                                <ul class="history-list" id="scanHistory">
+                                    <!-- Will be populated from JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Credits Page -->
+                    <div class="page" id="credits-page">
+                        <h1 class="page-title">Credit Request</h1>
+                        <div class="card">
+                            <div class="credits-section">
+                                <div class="credits-header">
+                                    <h2>Available Credits</h2>
+                                    <span class="credits-amount" id="userCreditsDetail">0</span>
+                                </div>
+                                <button class="request-credits-btn" onclick="showCreditRequestModal()">
+                                    Request Additional Credits
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Credit Requests Page -->
+                    <!-- In credit-requests-page div -->
+                    <div class="page" id="credit-requests-page">
+                        <h1 class="page-title">Credit Requests</h1>
+                        <div class="card">
+                            <h2>Credit Request History</h2>
+                            <div id="creditRequestsContainer">
+                                <!-- Requests will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Document Viewer Modal -->
+        <div id="documentViewer" class="document-viewer">
+            <div class="document-content">
+                <h2 id="viewerTitle"></h2>
+                <div id="documentContent"></div>
+                <button class="close-btn" onclick="closeDocumentViewer()">Close</button>
+            </div>
+        </div>
+    
+        <!-- Credit Request Modal -->
+        <div id="creditRequestModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Request Additional Credits</h2>
+                </div>
+                <form id="creditRequestForm" onsubmit="submitCreditRequest(event)">
+                    <div class="form-group">
+                        <label for="creditAmount">Number of Credits Needed</label>
+                        <input type="number" id="creditAmount" min="1" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="requestReason">Reason for Request</label>
+                        <textarea id="requestReason" rows="3" required></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn cancel-btn"
+                            onclick="hideCreditRequestModal()">Cancel</button>
+                        <button type="submit" class="modal-btn submit-btn">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="js/user_script.js"></script>
+    </body>
+    
+    </html>
